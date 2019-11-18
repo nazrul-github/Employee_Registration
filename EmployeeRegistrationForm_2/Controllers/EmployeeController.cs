@@ -48,5 +48,43 @@ namespace EmployeeRegistrationForm_2.Controllers
             aEmployee = emloyeeDbContext.GetAllEmployees.Single(emp => emp.Id == id);
             return View(aEmployee);
         }
+
+        [HttpPost]
+        public ActionResult Edit()
+        {
+            Employee aEmployee = new Employee();
+            TryUpdateModel(aEmployee);
+            if (ModelState.IsValid)
+            {
+                emloyeeDbContext.UpdateEmployee(aEmployee);
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public ActionResult Delete_Get(int id)
+        {
+            Employee aEmployee = new Employee();
+            aEmployee = emloyeeDbContext.GetAllEmployees.Single(emp => emp.Id == id);
+            return View(aEmployee);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult Delete_Post(int id)
+        {
+            emloyeeDbContext.DeleteEmploye(id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(int id)
+        {
+            Employee aEmployee = new Employee();
+            aEmployee = emloyeeDbContext.GetAllEmployees.Single(emp => emp.Id == id);
+            return View(aEmployee);
+        }
     }
 }

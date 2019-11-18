@@ -37,6 +37,7 @@ namespace EmployeeRegistrationForm_2.Models.DAL
                         aEmployee.Phone = reader["phone"].ToString();
                         allEmployees.Add(aEmployee);
                     }
+
                     reader.Close();
                     connection.Close();
                     return allEmployees;
@@ -59,6 +60,41 @@ namespace EmployeeRegistrationForm_2.Models.DAL
                 cmd.Parameters.AddWithValue("@Phone", aEmployee.Phone);
                 cmd.Parameters.AddWithValue("@City", aEmployee.City);
                 cmd.Parameters.AddWithValue("@Country", aEmployee.Country);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public void UpdateEmployee(Employee aEmployee)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = connection;
+                cmd.CommandText = "sp_UpdateCustomer";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", aEmployee.Id);
+                cmd.Parameters.AddWithValue("@Name", aEmployee.Name);
+                cmd.Parameters.AddWithValue("@Address", aEmployee.Address);
+                cmd.Parameters.AddWithValue("@ZipCode", aEmployee.Zip_Code);
+                cmd.Parameters.AddWithValue("@Phone", aEmployee.Phone);
+                cmd.Parameters.AddWithValue("@City", aEmployee.City);
+                cmd.Parameters.AddWithValue("@Country", aEmployee.Country);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public void DeleteEmploye(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "DELETE FROM customer_list WHERE id = @Id;";
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteNonQuery();
                 connection.Close();
